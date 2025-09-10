@@ -24,6 +24,10 @@ class TodoDatabase {
   Future<Database> _initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String dbPath = path.join(documentsDirectory.path, "todo_database.db");
+
+    // Add this print statement to see the full path
+    // print('Database path: $dbPath');
+
     return await openDatabase(
       dbPath,
       version: 1,
