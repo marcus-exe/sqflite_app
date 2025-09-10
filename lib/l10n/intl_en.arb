@@ -1,0 +1,13 @@
+{
+"@@locale": "en",
+"todoList": "Todo List",
+"addANewTodo": "Add a new Todo",
+"todoTitle": "Todo title",
+"description": "Description",
+"cancel": "Cancel",
+"save": "Save",
+"editTodo": "Edit Todo",
+"noTodosYet": "No todos yet! Add one with the button below.",
+"markAsComplete": "Mark as complete",
+"markAsIncomplete": "Mark as incomplete"
+}

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite_app/data/models/todo.dart';
 import 'package:sqflite_app/domain/intents/todo_intent.dart';
 import 'package:sqflite_app/domain/view_models/todo_view_model.dart';
+import 'package:sqflite_app/l10n/app_localizations.dart';
 
 class TodoListScreen extends ConsumerWidget {
   const TodoListScreen({super.key});
@@ -13,26 +14,27 @@ class TodoListScreen extends ConsumerWidget {
     await showDialog(
       context: context,
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: const Text('Add a new Todo'),
+          title: Text(l10n.addANewTodo),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
                 autofocus: true,
-                decoration: const InputDecoration(labelText: 'Todo title'),
+                decoration: InputDecoration(labelText: l10n.todoTitle),
               ),
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: l10n.description),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -42,7 +44,7 @@ class TodoListScreen extends ConsumerWidget {
                   ));
                 Navigator.of(context).pop();
               },
-              child: const Text('Save'),
+              child: Text(l10n.save),
             ),
           ],
         );
@@ -56,26 +58,27 @@ class TodoListScreen extends ConsumerWidget {
     await showDialog(
       context: context,
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: const Text('Edit Todo'),
+          title: Text(l10n.editTodo),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
                 autofocus: true,
-                decoration: const InputDecoration(labelText: 'Todo title'),
+                decoration: InputDecoration(labelText: l10n.todoTitle),
               ),
               TextField( // New TextField for description
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: l10n.description),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -86,7 +89,7 @@ class TodoListScreen extends ConsumerWidget {
                   ));
                 Navigator.of(context).pop();
               },
-              child: const Text('Save'),
+              child: Text(l10n.save),
             ),
           ],
         );
@@ -98,15 +101,16 @@ class TodoListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(todoViewModelProvider);
     final viewModel = ref.read(todoViewModelProvider.notifier);
+    final l10n = AppLocalizations.of(context)!; // Get the localization object
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo List'),
+        title: Text(l10n.todoList), // Use localized string
       ),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.todos.isEmpty
-              ? const Center(child: Text('No todos yet! Add one with the button below.'))
+              ? Center(child: Text(l10n.noTodosYet)) // Use localized string
               : ListView.builder(
                   itemCount: state.todos.length,
                   itemBuilder: (context, index) {
@@ -114,11 +118,17 @@ class TodoListScreen extends ConsumerWidget {
                     return Card(
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: ListTile(
-                        leading: Checkbox(
-                          value: todo.isDone,
-                          onChanged: (bool? value) {
-                            viewModel.processIntent(ToggleTodoIntent(todo));
-                          },
+                        leading: Tooltip(
+                          message: todo.isDone ? l10n.markAsIncomplete : l10n.markAsComplete, // Use localized strings
+                          child: InkWell(
+                            onTap: () {
+                              viewModel.processIntent(ToggleTodoIntent(todo));
+                            },
+                            child: Icon(
+                              todo.isDone ? Icons.check_circle : Icons.circle_outlined,
+                              color: todo.isDone ? Colors.green : Colors.grey,
+                            ),
+                          ),
                         ),
                         title: Text(
                           todo.title,
@@ -127,7 +137,7 @@ class TodoListScreen extends ConsumerWidget {
                           ),
                         ),
                         subtitle: Text(
-                          todo.description, // Display the description
+                          todo.description,
                           style: TextStyle(
                             decoration: todo.isDone ? TextDecoration.lineThrough : null,
                             color: Colors.grey[600],

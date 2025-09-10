@@ -1,0 +1,13 @@
+{
+"@@locale": "es",
+"todoList": "Lista de Tareas",
+"addANewTodo": "Añadir una nueva tarea",
+"todoTitle": "Título de la tarea",
+"description": "Descripción",
+"cancel": "Cancelar",
+"save": "Guardar",
+"editTodo": "Editar tarea",
+"noTodosYet": "¡Aún no hay tareas! Añade una con el botón de abajo.",
+"markAsComplete": "Marcar como completado",
+"markAsIncomplete": "Marcar como incompleto"
+}
