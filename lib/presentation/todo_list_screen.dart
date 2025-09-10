@@ -106,6 +106,17 @@ class TodoListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.todoList), // Use localized string
+
+        //uncomment this line to have the clear secure storage button in the app bar
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.delete_forever),
+        //     tooltip: 'Clear Secure Storage',
+        //     onPressed: () {
+        //       viewModel.processIntent(ClearStorageIntent());
+        //     },
+        //   ),
+        // ],
       ),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())

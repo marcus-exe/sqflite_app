@@ -45,6 +45,9 @@ class TodoViewModel extends StateNotifier<TodoState> {
       } else if (intent is DeleteTodoIntent) {
         await _db.deleteTodo(intent.id);
         _refreshTodos();
+      } else if (intent is ClearStorageIntent) {
+        await _db.clearSecureStorage();
+        _refreshTodos();
       }
     } catch (e) {
       state = state.copyWith(error: 'An error occurred.');

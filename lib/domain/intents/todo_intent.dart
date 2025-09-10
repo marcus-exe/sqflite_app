@@ -22,3 +22,4 @@ class DeleteTodoIntent extends TodoIntent {
   final int id;
   DeleteTodoIntent(this.id);
 }
+class ClearStorageIntent extends TodoIntent {}
