@@ -5,7 +5,8 @@ abstract class TodoIntent {}
 class LoadTodosIntent extends TodoIntent {}
 class AddTodoIntent extends TodoIntent {
   final String title;
-  AddTodoIntent(this.title);
+  final String description;
+  AddTodoIntent(this.title, this.description);
 }
 class ToggleTodoIntent extends TodoIntent {
   final Todo todo;
@@ -14,7 +15,8 @@ class ToggleTodoIntent extends TodoIntent {
 class EditTodoIntent extends TodoIntent {
   final Todo todo;
   final String newTitle;
-  EditTodoIntent(this.todo, this.newTitle);
+  final String newDescription;
+  EditTodoIntent(this.todo, this.newTitle, this.newDescription);
 }
 class DeleteTodoIntent extends TodoIntent {
   final int id;

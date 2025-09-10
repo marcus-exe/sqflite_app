@@ -9,15 +9,25 @@ class TodoListScreen extends ConsumerWidget {
 
   Future<void> _showAddTodoDialog(BuildContext context, WidgetRef ref) async {
     final TextEditingController titleController = TextEditingController();
+    final TextEditingController descriptionController = TextEditingController();
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Add a new Todo'),
-          content: TextField(
-            controller: titleController,
-            autofocus: true,
-            decoration: const InputDecoration(labelText: 'Todo title'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                autofocus: true,
+                decoration: const InputDecoration(labelText: 'Todo title'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -26,7 +36,10 @@ class TodoListScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                ref.read(todoViewModelProvider.notifier).processIntent(AddTodoIntent(titleController.text));
+                ref.read(todoViewModelProvider.notifier).processIntent(AddTodoIntent(
+                  titleController.text,
+                  descriptionController.text,
+                  ));
                 Navigator.of(context).pop();
               },
               child: const Text('Save'),
@@ -39,15 +52,25 @@ class TodoListScreen extends ConsumerWidget {
 
   Future<void> _showEditTodoDialog(BuildContext context, WidgetRef ref, Todo todo) async {
     final TextEditingController titleController = TextEditingController(text: todo.title);
+    final TextEditingController descriptionController = TextEditingController(text: todo.description); // New controller
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Edit Todo'),
-          content: TextField(
-            controller: titleController,
-            autofocus: true,
-            decoration: const InputDecoration(labelText: 'Todo title'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                autofocus: true,
+                decoration: const InputDecoration(labelText: 'Todo title'),
+              ),
+              TextField( // New TextField for description
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -56,7 +79,11 @@ class TodoListScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                ref.read(todoViewModelProvider.notifier).processIntent(EditTodoIntent(todo, titleController.text));
+                ref.read(todoViewModelProvider.notifier).processIntent(EditTodoIntent(
+                  todo, 
+                  titleController.text,
+                  descriptionController.text,
+                  ));
                 Navigator.of(context).pop();
               },
               child: const Text('Save'),
@@ -97,6 +124,13 @@ class TodoListScreen extends ConsumerWidget {
                           todo.title,
                           style: TextStyle(
                             decoration: todo.isDone ? TextDecoration.lineThrough : null,
+                          ),
+                        ),
+                        subtitle: Text(
+                          todo.description, // Display the description
+                          style: TextStyle(
+                            decoration: todo.isDone ? TextDecoration.lineThrough : null,
+                            color: Colors.grey[600],
                           ),
                         ),
                         trailing: Row(

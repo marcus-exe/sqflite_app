@@ -29,7 +29,7 @@ class TodoDatabase {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, isDone INTEGER)",
+          "CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, isDone INTEGER)",
         );
       },
     );

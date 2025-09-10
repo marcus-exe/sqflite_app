@@ -28,7 +28,7 @@ class TodoViewModel extends StateNotifier<TodoState> {
         state = state.copyWith(todos: todos, isLoading: false);
       } else if (intent is AddTodoIntent) {
         if (intent.title.isNotEmpty) {
-          final newTodo = Todo(title: intent.title);
+          final newTodo = Todo(title: intent.title, description: intent.description);
           await _db.createTodo(newTodo);
           _refreshTodos();
         }
@@ -38,7 +38,7 @@ class TodoViewModel extends StateNotifier<TodoState> {
         _refreshTodos();
       } else if (intent is EditTodoIntent) {
         if (intent.newTitle.isNotEmpty) {
-          final updatedTodo = intent.todo.copyWith(title: intent.newTitle);
+          final updatedTodo = intent.todo.copyWith(title: intent.newTitle, description: intent.newDescription);
           await _db.updateTodo(updatedTodo);
           _refreshTodos();
         }
